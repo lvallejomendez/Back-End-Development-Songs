@@ -1,11 +1,21 @@
 # Pin Werkzeug because it keeps breaking Flask!
 Werkzeug==2.2.2
+
 # Runtime dependencies
 Flask==2.2.2
+
 # Runtime tools
 gunicorn==20.1.0
+
+# Code quality
+# pylint==2.14.0
+# flake8==4.0.1
+black==22.3.0
+
 # Testing dependencies
 pytest==7.0.1
+
+# Code Coverage
 coverage==6.2
 codecov==2.1.12
 
