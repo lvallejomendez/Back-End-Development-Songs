@@ -66,3 +66,29 @@ def count():
     count = db.songs.count_documents({})
 
     return {"count": count}, 200
+
+######################################################################
+# GET ALL SONGS
+######################################################################
+@app.route("/song", methods=["GET"])
+def songs():
+    """
+    Get all songs in the list
+    """
+    documents = list(db.songs.find({}))
+    print(documents[0])
+
+    return {"songs": parse_json(documents)}, 200
+
+######################################################################
+# GET A SONG BY ID
+######################################################################
+@app.route("/song", methods=["GET"])
+def songs():
+    """
+    Get all songs in the list
+    """
+    documents = list(db.songs.find({}))
+    print(documents[0])
+
+    return {"songs": parse_json(documents)}, 200
