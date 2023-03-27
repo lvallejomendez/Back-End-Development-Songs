@@ -67,6 +67,7 @@ def count():
 
     return {"count": count}, 200
 
+
 ######################################################################
 # GET ALL SONGS
 ######################################################################
@@ -80,15 +81,17 @@ def songs():
 
     return {"songs": parse_json(documents)}, 200
 
+
 ######################################################################
 # GET A SONG BY ID
 ######################################################################
-@app.route("/song", methods=["GET"])
-def songs():
+@app.route("/song/<int:id>", methods=["GET"])
+def get_song_by_id(id):
     """
-    Get all songs in the list
+    Get a song by id
     """
-    documents = list(db.songs.find({}))
-    print(documents[0])
+    song = db.songs.find_one({"id": id})
+    if not song:
+        return {"message": f"song with id {id} not found"}, 404
 
-    return {"songs": parse_json(documents)}, 200
+    return parse_json(song), 200
