@@ -15,15 +15,15 @@ songs_list: list = json.load(open(json_url))
 
 # client = MongoClient(
 #     f"mongodb://{app.config['MONGO_USERNAME']}:{app.config['MONGO_PASSWORD']}@localhost")
-mongodb_service = os.environ.get('MONGODB_SERVICE')
-mongodb_username = os.environ.get('MONGODB_USERNAME')
-mongodb_password = os.environ.get('MONGODB_PASSWORD')
-mongodb_port = os.environ.get('MONGODB_PORT')
+mongodb_service = os.environ.get("MONGODB_SERVICE")
+mongodb_username = os.environ.get("MONGODB_USERNAME")
+mongodb_password = os.environ.get("MONGODB_PASSWORD")
+mongodb_port = os.environ.get("MONGODB_PORT")
 
-print(f'The value of MONGODB_SERVICE is: {mongodb_service}')
+print(f"The value of MONGODB_SERVICE is: {mongodb_service}")
 
 if mongodb_service == None:
-    app.logger.error('Missing MongoDB server in the MONGODB_SERVICE variable')
+    app.logger.error("Missing MongoDB server in the MONGODB_SERVICE variable")
     # abort(500, 'Missing MongoDB server in the MONGODB_SERVICE variable')
     sys.exit(1)
 
@@ -44,9 +44,25 @@ db = client.songs
 db.songs.drop()
 db.songs.insert_many(songs_list)
 
+
 def parse_json(data):
     return json.loads(json_util.dumps(data))
 
+
 ######################################################################
-# INSERT CODE HERE
+# RETURN HEALTH OF THE APP
 ######################################################################
+@app.route("/health")
+def health():
+    return jsonify(dict(status="OK")), 200
+
+
+######################################################################
+# COUNT THE NUMBER OF DOCUMENTS IN THE SONGS COLLECTIONS
+######################################################################
+@app.route("/count")
+def count():
+    """return length of data"""
+    count = db.songs.count_documents({})
+
+    return {"count": count}, 200
