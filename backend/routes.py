@@ -96,6 +96,7 @@ def get_song_by_id(id):
 
     return parse_json(song), 200
 
+
 ######################################################################
 # CREATE A SONG
 ######################################################################
@@ -109,9 +110,7 @@ def create_song():
     song = db.songs.find_one({"id": new_song["id"]})
 
     if song:
-        return {
-            "Message": f"song with id {song['id']} already present"
-            }, 302
+        return {"Message": f"song with id {song['id']} already present"}, 302
 
     insert_id: InsertOneResult = db.songs.insert_one(new_song)
 
@@ -141,7 +140,15 @@ def update_song(id):
     else:
         return parse_json(db.songs.find_one({"id": id})), 201
 
+
 ######################################################################
 # DELETE A SONG
 ######################################################################
+@app.route("/song/<int:id>", methods=["DELETE"])
+def delete_song(id):
 
+    result = db.songs.delete_one({"id": id})
+    if result.deleted_count == 0:
+        return {"message": "song not found"}, 404
+    else:
+        return "", 204
